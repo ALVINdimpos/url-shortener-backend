@@ -22,7 +22,9 @@ passport.use(
     {
       clientID: process.env.GOOGLE_CLIENT_ID!,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
-      callbackURL: `http://localhost:${process.env.PORT}/auth/users/google/callback`,
+      callbackURL:
+        "https://url-shortener-backend-5qi6.onrender.com/auth/users/google/callback",
+
       passReqToCallback: true,
     },
     async (
@@ -69,7 +71,8 @@ passport.use(
     {
       clientID: process.env.GITHUB_CLIENT_ID!,
       clientSecret: process.env.GITHUB_CLIENT_SECRET!,
-      callbackURL: `http://localhost:${process.env.PORT}/auth/users/github/callback`,
+      callbackURL:
+        "https://url-shortener-backend-5qi6.onrender.com/auth/users/github/callback",
       passReqToCallback: false,
       scope: ["user:email"],
     },
@@ -84,7 +87,9 @@ passport.use(
         return done(new Error("Email not provided by GitHub profile"));
       }
 
-      let user = await User.findOne({ where: { [Op.or]: [{ github_id: profile.id }, { email }] } });
+      let user = await User.findOne({
+        where: { [Op.or]: [{ github_id: profile.id }, { email }] },
+      });
       if (!user) {
         user = await User.create({
           username: profile.displayName,
