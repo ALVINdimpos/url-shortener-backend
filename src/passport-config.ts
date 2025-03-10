@@ -38,10 +38,7 @@ passport.use(
       try {
         let user = await User.findOne({
           where: {
-            [Op.or]: [
-              { google_id: profile.id },
-              { email: profile.emails[0].value },
-            ],
+            [Op.or]: [{ google_id: profile.id }],
           },
         });
 
@@ -88,7 +85,7 @@ passport.use(
       }
 
       let user = await User.findOne({
-        where: { [Op.or]: [{ github_id: profile.id }, { email }] },
+        where: { [Op.or]: [{ github_id: profile.id }] },
       });
       if (!user) {
         user = await User.create({
