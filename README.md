@@ -23,17 +23,16 @@ This project is a scalable URL shortener application that allows users to shorte
 - **User Authentication**: Secure registration, login, and JWT-based authentication.
 - **URL Management**: Create, view, and manage shortened URLs.
 - **Analytics**: Track clicks and usage statistics for each shortened URL.
-- **Modern UI**: Built with React/Next.js and TailwindCSS.
-- **Scalable Backend**: Built with Node.js/NestJS, Python/FastAPI, or Java/Spring Boot.
-- **Database**: Relational database using MySQL/PostgreSQL.
+- **Scalable Backend**: Built with Node.js/Typescript.
+- **Database**: Relational database using PostgreSQL.
 
 ## Technology Stack
 
-- **Frontend**: React/Next.js/Angular with TailwindCSS
-- **Backend**: Node.js/NestJS, Python/FastAPI, or Java/Spring Boot
-- **Database**: MySQL/PostgreSQL
+- **Frontend**: React/Next.js with TailwindCSS
+- **Backend**: Node.js/Typescript
+- **Database**: PostgreSQL
 - **Authentication**: JWT/OAuth
-- **Deployment**: Docker, Local/Cloud
+- **Deployment**: Docker
 
 ## Setup Instructions
 
