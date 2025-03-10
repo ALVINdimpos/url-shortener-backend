@@ -12,6 +12,7 @@ A full-stack URL shortener web application with a modern UI, secure authenticati
   - [Setup Instructions](#setup-instructions)
     - [Prerequisites](#prerequisites)
     - [Installation](#installation)
+- [Author](#author)
 
 ## Introduction
 
@@ -56,9 +57,9 @@ This project is a scalable URL shortener application that allows users to shorte
    npm install
    ```
 
-3. Set up the database:
+3. Set up the environment variables:
 
-   Create a database and update the configuration in config/config.js.
+   Create a .env file  and use the .env.example file as a reference to set up the environment variables.
 
 4. Run the migrations:
 
@@ -80,11 +81,11 @@ This project is a scalable URL shortener application that allows users to shorte
 
 6. Usage
 
-1. Register/Login: Create an account or log in to access the URL shortening service.
-2. Shorten URLs: Use the input field to shorten long URLs.
-3. Manage URLs: View and manage your shortened URLs from the dashboard.
-4. View Analytics: Check the click and usage statistics for each URL.
-5. API Documentation
+7. Register/Login: Create an account or log in to access the URL shortening service.
+8. Shorten URLs: Use the input field to shorten long URLs.
+9. Manage URLs: View and manage your shortened URLs from the dashboard.
+10. View Analytics: Check the click and usage statistics for each URL.
+11. API Documentation
 
 The API endpoints are documented using Swagger. You can access the API documentation at /swagger-docs after starting the application.
 
@@ -98,7 +99,7 @@ Key Endpoints
 6. GET /analytics/: Get URL stats
 Authentication
 
-api docs: [API Documentation](http://localhost:3000/swagger-docs)
+api docs: [API Documentation](https://url-shortener-backend-5qi6.onrender.com/api-docs/#/)
 
 Testing
 The project includes unit and integration tests. To run the tests:
@@ -107,12 +108,9 @@ The project includes unit and integration tests. To run the tests:
 npm test
 ```
 
-Achieving 80% Test Coverage
-To achieve 80% test coverage, ensure that:
+Achieved 80% Test Coverage
 
-All critical functions and methods are covered by unit tests.
-Integration tests cover the main user flows, such as registration, login, URL shortening, and analytics.
-Use tools like Jest and Supertest to write and run your tests.
-Regularly check test coverage reports to identify and address gaps.
-Deployment
-The application can be deployed locally or to the cloud. Docker is used for containerization, and a docker-compose.yml file is provided for local setup.
+
+# Author
+
+[Niyigena Fiston Alvin](https://www.linkedin.com/in/fistonalvin/)
