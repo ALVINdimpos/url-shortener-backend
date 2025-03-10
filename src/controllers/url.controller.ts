@@ -104,23 +104,14 @@ export const updateUrlByShortCode = asyncHandler(
 export const getAllUrlsForUser = asyncHandler(
   async (req: Request, res: Response) => {
     const user_id = req.user?.id;
-    const { page, size } = req.query;
-    const { take, skip } = getPagination({
-      page: page ? +page : undefined,
-      size: size ? +size : undefined,
-    });
     if (!user_id) {
       res.status(401).json({ message: "Unauthorized" });
       return;
     }
-    const urls = await get_all_urls_for_user_service(user_id, take, skip);
+    const urls = await get_all_urls_for_user_service(user_id);
 
     res.status(200).json({
-      data: getPagingData({
-        data: urls,
-        page: page ? +page : undefined,
-        size: size ? +size : undefined,
-      }),
+      data: urls,
       message: "URLs fetched successfully",
     });
   }

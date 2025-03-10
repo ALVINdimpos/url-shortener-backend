@@ -20,15 +20,9 @@ export const get_all_urls_service = async () => {
 };
 
 // Get all URLs for a user
-export const get_all_urls_for_user_service = async (
-  user_id: string,
-  take: number,
-  skip: number
-) => {
-  return await Url.findAndCountAll({
+export const get_all_urls_for_user_service = async (user_id: string) => {
+  return await Url.findAll({
     where: { user_id },
-    limit: take,
-    offset: skip,
   });
 };
 
