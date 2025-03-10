@@ -109,6 +109,7 @@ npm test
 
 Achieved 80% Test Coverage
 
+![Test Coverage](./screenshots/Screenshot%202025-03-10%20at%2012.42.57 PM.png)
 
 # Author
 
