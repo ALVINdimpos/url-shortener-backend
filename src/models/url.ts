@@ -5,6 +5,7 @@ import {
   DataType,
   ForeignKey,
   BelongsTo,
+  Index,
 } from "sequelize-typescript";
 import { User } from "./user";
 import { v4 as uuidv4 } from "uuid";
@@ -18,6 +19,10 @@ export class Url extends Model {
   })
   id!: string;
 
+  @Index({
+    name: "short_code_index",
+    unique: true,
+  })
   @Column({
     type: DataType.STRING,
     allowNull: false,

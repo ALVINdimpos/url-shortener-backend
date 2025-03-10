@@ -265,7 +265,7 @@
  *       401:
  *         description: Unauthorized
  *
- *   put:
+ *   patch:
  *     summary: Update a URL
  *     tags: [URLs]
  *     security:

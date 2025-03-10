@@ -1,18 +1,22 @@
 require("dotenv").config();
 
-module.exports = {
+const config = {
   development: {
-    url: process.env.DATABASE_URL,
+    url:
+      process.env.DATABASE_URL ||
+      "postgres://postgres:postgres@localhost:5432/url_shortener_dev",
     dialect: "postgres",
     dialectOptions: {
-      ssl: process.env.DATABASE_URL?.includes("localhost") ? false : {
-        require: true,
+      ssl: {
+        require: false,
         rejectUnauthorized: false,
       },
     },
   },
   test: {
-    url: process.env.DATABASE_URL,
+    url:
+      process.env.TEST_DATABASE_URL ||
+      "postgres://postgres:postgres@localhost:5432/url_shortener_test",
     dialect: "postgres",
     dialectOptions: {
       ssl: {
@@ -32,3 +36,5 @@ module.exports = {
     },
   },
 };
+
+module.exports = config;
