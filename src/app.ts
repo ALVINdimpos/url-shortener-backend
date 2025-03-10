@@ -9,9 +9,7 @@ import swaggerJsdoc from "swagger-jsdoc";
 import swaggerUi from "swagger-ui-express";
 import { sequelize } from "./models";
 import cookieParser from "cookie-parser";
-import csurf from "csurf";
 
-const csrfProtection = csurf({ cookie: true });
 // Express session options
 declare module "express-session" {
   interface SessionData {
@@ -47,14 +45,6 @@ app.use(cookieParser());
 // JSON parser
 app.use(express.json());
 
-app.use((err: any, req: any, res: any, next: any) => {
-  if (err.code === "EBADCSRFTOKEN") {
-    console.log("CSRF Token Validation Error:", err);
-    res.status(403).json({ error: "Invalid CSRF token" });
-  } else {
-    next(err);
-  }
-});
 // URL encoded parser
 app.use(express.urlencoded({ extended: true }));
 
@@ -98,22 +88,6 @@ app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(specs));
 
 // URL routes
 app.use("/urls", urlRoutes);
-
-// Error handler for CSRF
-app.use(
-  (
-    err: any,
-    req: express.Request,
-    res: express.Response,
-    next: express.NextFunction
-  ) => {
-    if (err.code === "EBADCSRFTOKEN") {
-      res.status(403).json({ error: "Invalid CSRF token" });
-    } else {
-      next(err);
-    }
-  }
-);
 
 const PORT = process.env.PORT || 3000;
 
