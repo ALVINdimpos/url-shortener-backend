@@ -39,6 +39,16 @@ module.exports = {
         allowNull: false,
       },
     });
+
+    await queryInterface.addIndex("users", {
+      fields: ["username"],
+      unique: true,
+    });
+
+    await queryInterface.addIndex("users", {
+      fields: ["email"],
+      unique: true,
+    });
   },
 
   down: async (queryInterface, Sequelize) => {

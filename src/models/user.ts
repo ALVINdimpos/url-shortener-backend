@@ -1,4 +1,4 @@
-import { Table, Column, Model, DataType, HasMany } from "sequelize-typescript";
+import { Table, Column, Model, DataType, HasMany, Index } from "sequelize-typescript";
 import { Url } from "./url";
 import { v4 as uuidv4 } from "uuid";
 
@@ -15,6 +15,10 @@ export class User extends Model {
   })
   id!: string;
 
+  @Index({
+    name: "email_index",
+    unique: true,
+  })
   @Column({
     type: DataType.STRING,
     allowNull: false,

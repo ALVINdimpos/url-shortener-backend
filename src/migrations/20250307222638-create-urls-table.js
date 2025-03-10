@@ -39,6 +39,11 @@ module.exports = {
         allowNull: false,
       },
     });
+
+    await queryInterface.addIndex("urls", {
+      fields: ["short_code"],
+      unique: true,
+    });
   },
 
   down: async (queryInterface, Sequelize) => {

@@ -1,17 +1,19 @@
-import 'reflect-metadata';
-import express from 'express';
-import cors from 'cors';
-import session, { SessionOptions } from 'express-session';
-import passport from './passport-config';
-import authRoutes from './routes/auth';
-import urlRoutes from './routes/url';
-import swaggerJsdoc from 'swagger-jsdoc';
-import swaggerUi from 'swagger-ui-express';
-import { sequelize } from './models';
-import cookieParser from 'cookie-parser';
-import csurf from 'csurf';
+import "reflect-metadata";
+import express from "express";
+import cors from "cors";
+import session, { SessionOptions } from "express-session";
+import passport from "./passport-config";
+import authRoutes from "./routes/auth";
+import urlRoutes from "./routes/url";
+import swaggerJsdoc from "swagger-jsdoc";
+import swaggerUi from "swagger-ui-express";
+import { sequelize } from "./models";
+import cookieParser from "cookie-parser";
+import csurf from "csurf";
 
-declare module 'express-session' {
+const csrfProtection = csurf({ cookie: true });
+// Express session options
+declare module "express-session" {
   interface SessionData {
     passport: { user: number };
   }
@@ -19,73 +21,83 @@ declare module 'express-session' {
 
 const app = express();
 
+// Swagger options
 const swaggerOptions = {
   swaggerDefinition: {
-    openapi: '3.0.0',
+    openapi: "3.0.0",
     info: {
-      title: 'URL Shortener API',
-      version: '1.0.0',
+      title: "URL Shortener API",
+      version: "1.0.0",
     },
   },
-  apis: ['./src/routes/*.ts', './src/swagger-docs.ts'],
+  apis: ["./src/routes/*.ts", "./src/swagger-docs.ts"],
 };
 
+// CORS options
 app.use(
   cors({
-    origin: true,
+    origin: process.env.CLIENT_URL || "http://localhost:3000",
     credentials: true,
   })
 );
 
+// Cookie parser
 app.use(cookieParser());
+
+// JSON parser
 app.use(express.json());
+
+app.use((err: any, req: any, res: any, next: any) => {
+  if (err.code === "EBADCSRFTOKEN") {
+    console.log("CSRF Token Validation Error:", err);
+    res.status(403).json({ error: "Invalid CSRF token" });
+  } else {
+    next(err);
+  }
+});
+// URL encoded parser
 app.use(express.urlencoded({ extended: true }));
 
+// Session config
 const sessionConfig: SessionOptions = {
-  secret: process.env.SESSION_SECRET || '',
+  secret: process.env.SESSION_SECRET || "",
   resave: false,
   saveUninitialized: false,
   cookie: {
-    secure: process.env.NODE_ENV === 'production',
+    secure: process.env.NODE_ENV === "production",
     httpOnly: true,
-    sameSite: process.env.NODE_ENV === 'production' ? 'strict' : 'lax',
-    maxAge: 24 * 60 * 60 * 1000,
+    sameSite: process.env.NODE_ENV === "production" ? "strict" : "lax",
+    maxAge: 24 * 60 * 60 * 1000, // 24 hours
   },
 };
 
+// Session middleware
 app.use(session(sessionConfig));
+
+// Passport middleware
 app.use(passport.initialize());
 app.use(passport.session());
-
-// Skip CSRF in test environment
-const csrfProtection =
-  process.env.NODE_ENV === 'test'
-    ? (req: any, res: any, next: any) => next()
-    : csurf({
-        cookie: {
-          httpOnly: true,
-          secure: process.env.NODE_ENV === 'production',
-        },
-      });
-// CSRF Token endpoint
-app.get('/csrf-token', csrfProtection, (req, res) => {
-  res.json({ token: req.csrfToken() });
-});
 
 sequelize
   .authenticate()
   .then(() => {
-    console.log('Database connection established successfully.');
+    console.log("Database connection established successfully.");
   })
   .catch((err: Error) => {
-    console.error('Unable to connect to the database:', err);
+    console.error("Unable to connect to the database:", err);
   });
 
+// Swagger specs
 const specs = swaggerJsdoc(swaggerOptions);
 
-app.use('/auth/users', authRoutes);
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
-app.use('/urls', urlRoutes);
+// Auth routes
+app.use("/auth/users", authRoutes);
+
+// API docs
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(specs));
+
+// URL routes
+app.use("/urls", urlRoutes);
 
 // Error handler for CSRF
 app.use(
@@ -95,8 +107,8 @@ app.use(
     res: express.Response,
     next: express.NextFunction
   ) => {
-    if (err.code === 'EBADCSRFTOKEN') {
-      res.status(403).json({ error: 'Invalid CSRF token' });
+    if (err.code === "EBADCSRFTOKEN") {
+      res.status(403).json({ error: "Invalid CSRF token" });
     } else {
       next(err);
     }
@@ -105,7 +117,8 @@ app.use(
 
 const PORT = process.env.PORT || 3000;
 
-if (process.env.NODE_ENV === 'development') {
+// Only start the server if we're not in a test environment
+if (process.env.NODE_ENV === "development") {
   app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
   });

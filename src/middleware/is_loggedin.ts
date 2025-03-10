@@ -1,32 +1,30 @@
-import { verifyToken } from "../utils/jwt";
+import { NextFunction, Request, Response } from "express";
+import jwt from "jsonwebtoken";
 import { User } from "../models";
-import { RequestHandler } from "express";
 
-// Extend Express Request
 declare module "express" {
   interface Request {
     user?: User;
   }
 }
 
-interface JwtPayload {
-  id: string;
-  email: string;
-}
-
-export const isLoggedIn: RequestHandler = (req, res, next): void => {
+export const isLoggedIn = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): void => {
   const token = req.headers.authorization?.split(" ")[1];
   if (!token) {
-    res.status(401).json({ error: "Unauthorized" });
+    res.status(401).json({ message: "Unauthorized" });
     return;
   }
 
-  const decoded = verifyToken(token) as JwtPayload;
-  if (!decoded) {
-    res.status(401).json({ error: "Unauthorized" });
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET!);
+    req.user = decoded as User;
+    next();
+  } catch (error) {
+    res.status(401).json({ message: "Invalid token" });
     return;
   }
-
-  req.user = decoded as unknown as User;
-  next();
 };

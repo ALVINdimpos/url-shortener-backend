@@ -1,6 +1,6 @@
 interface DatabaseConfig {
   url: string;
-  dialect: "postgres";
+  dialect: string;
   dialectOptions: {
     ssl: {
       require: boolean;
@@ -10,9 +10,7 @@ interface DatabaseConfig {
 }
 
 interface Config {
-  development: DatabaseConfig;
-  test: DatabaseConfig;
-  production: DatabaseConfig;
+  [key: string]: DatabaseConfig;
 }
 
 declare const config: Config;
