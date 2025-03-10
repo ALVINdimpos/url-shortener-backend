@@ -167,6 +167,22 @@
  *       400:
  *         description: Authentication failed
  *
+ * /csrf-token:
+ *   get:
+ *     summary: Get a CSRF token
+ *     tags: [Users]
+ *     responses:
+ *       200:
+ *         description: A CSRF token
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 token:
+ *                   type: string
+ */
+
 /**
  * @swagger
  * tags:
